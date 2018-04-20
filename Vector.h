@@ -15,7 +15,6 @@ private:
     int size_;
 
     void resize(int size) {
-
             T *temp = array_;
 
             while (size > capacity_)
@@ -28,14 +27,15 @@ private:
             }
             delete temp;
 
-
     };
+
     void moveLeft(int index){
         for(int i = index; i <= size_; i++) {
             array_[i] = array_[i+1];
         }
         size_--;
     };
+
     void moveRight(int index){
         if(size_ == capacity_)
             resize(capacity_);
@@ -58,6 +58,7 @@ public:
         this->capacity_ = capacity;
 
     };
+
     ~Vector(){
         delete this->array_;
     };
@@ -98,38 +99,45 @@ public:
     void Delete(int index) {
         moveLeft(index);
     };
+
     void remove(T item){
         if(size_ == 0) {
             throw EmptyVectorException();
         } else {
-            for(int i = 0; i <= size_; i++)
-                if(array_[i] == item)
-                    Delete(i);
-
-
+            T *read, *write;
+            read = write = array_;
+            while(read < array_+capacity_) {
+                if(*read != item) {
+                    *write = *read;
+                    write++;
+                }
+                read++;
+            }
         }
     };
+
     int find(T item){
         for(int i= 0; i <= size_; i++)
             if(array_[i] == item)
                 return i;
         return -1;
     };
-    T operator=(int index){
-        return at(index);
-    };
 
-    //void prepend(T item);
+
+    void prepend(T item) {
+        moveRight(0);
+
+
+    }
 
     void display() {
         for(int i = 0; i < size_; i++) {
-                std::cout << array_[i];
+                std::cout << array_[i] << std::endl;
         }
     }
 
 };
 
 #include "exceptions.h"
-
 
 #endif //VECTOR_VECTOR_H
